@@ -34,4 +34,5 @@ jobs:
           helm repo add kusaridev https://kusaridev.github.io/helm-charts
           helm search repo kusaridev -l
           helm install my-guac kusaridev/guac
+          helm list
           helm delete my-guac
