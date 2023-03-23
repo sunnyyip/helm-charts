@@ -1,0 +1,36 @@
+name:  Helm Tests
+on:
+  deployment:
+
+permissions:  # added using https://github.com/step-security/secure-repo
+  contents: read
+
+jobs:
+  test-latest-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776 # v2.2.1
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+      - name: Install Helm
+        uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
+        with:
+           version: 'v3.11.2'
+
+      - name: Create kind cluster
+        uses: helm/kind-action@d8ccf8fb623ce1bb360ae2f45f323d9d5c5e9f00 # v1.5.0
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@901a10e89ea615cf61f57ac05cecdf23e7de06d8 # v3.2
+        with:
+           version: 'v1.26.0'
+        id: install
+
+      - name: Run Helm install/delete
+        run: |
+          helm repo add kusaridev https://kusaridev.github.io/helm-charts
+          helm search repo kusaridev -l
+          helm install my-guac kusaridev/guac
+          helm delete my-guac
