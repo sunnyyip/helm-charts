@@ -1,4 +1,4 @@
-name:  Helm Tests
+name:  Helm Release Tests
 on:
   deployment:
   push:
@@ -33,6 +33,6 @@ jobs:
         run: |
           helm repo add kusaridev https://kusaridev.github.io/helm-charts
           helm search repo kusaridev -l
-          helm install my-guac kusaridev/guac
+          helm install my-guac kusaridev/guac --debug
           helm list
           helm delete my-guac
