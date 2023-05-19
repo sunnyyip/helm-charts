@@ -159,6 +159,7 @@ guac:
         targetPort: 2782
 
   graphqlServer:
+    enabled: true
     name: graphql-server
     annotations:
       reloader.stakater.com/auto: "true"
@@ -177,6 +178,9 @@ guac:
         targetPort: 8080
     backend: inmem
     debug: true
+    selectorLabels:
+      app.kubernetes.io/name: graphql-server
+      app.kubernetes.io/component: graphql-server
 
   visualizer:
     name: visualizer
@@ -196,7 +200,15 @@ guac:
         targetPort: 3000
 
   observability:
-    deployServiceMonitor: false
+    serviceMonitor:
+      enabled: false
+      ## Specify the namespace where Prometheus Operator is running
+      # namespace: monitoring
+      labels: {}
+      annotations: {}
+      # path: /metrics
+      # interval:
+      # scrapeTimeout:
 
   sampleData:
     ingest: false
@@ -234,7 +246,7 @@ nats:
   exporter:
     enabled: true
     serviceMonitor:
-      enabled: false
+      enabled: true
       ## Specify the namespace where Prometheus Operator is running
       namespace: monitoring
       labels:
