@@ -28,7 +28,7 @@ jobs:
       - run: make build
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
-      - run: make container
+      - run: PATH=/usr/bin:$PATH make container
       - run: docker compose up -d
       - run: time ./bin/guacone collect files ./guac-data/docs
 
