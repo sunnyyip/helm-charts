@@ -41,7 +41,7 @@ jobs:
           echo "Running performance tests..."
           echo -e "\tDocker Compose"
           start=$(date -u +%s)
-          ./bin/guacone collect files ../guac-data/docs >/dev/null 2>&1
+          ./bin/guacone collect files ./guac-data/docs >/dev/null 2>&1
           end=$(date -u +%s)
           elapsed_time=$((end - start))
 
@@ -89,7 +89,7 @@ jobs:
           echo "Running performance tests..."
           echo -e "\tHelm"
           start=$(date -u +%s)
-          ./bin/guacone collect files ../guac-data/docs >/dev/null 2>&1
+          ./bin/guacone collect files ./guac-data/docs >/dev/null 2>&1
           end=$(date -u +%s)
           elapsed_time=$((end - start))
 
