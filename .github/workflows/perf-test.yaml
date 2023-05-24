@@ -45,7 +45,7 @@ jobs:
           end=$(date -u +%s)
           elapsed_time=$((end - start))
 
-          printf "%-15s%-20s%s seconds\n" "Performance" "Docker Compose" "$elapsed_docker"
+          printf "%-15s%-20s%s seconds\n" "Performance" "Docker Compose" "$elapsed_time"
           echo "ELAPSED_COMPOSE=$elapsed_time" >> $GITHUB_OUTPUT
       - run: docker compose up -d
 
