@@ -121,7 +121,7 @@ jobs:
 
   report:
     runs-on: ubuntu-latest
-    needs: [compose, helm]
+    needs: [helm, compose]
     steps:
       - run: |
           echo -e "\n\n\n"
@@ -131,7 +131,7 @@ jobs:
           printf "%-15s%-20s%s seconds\n" "Performance" "Helm" "$ELAPSED_HELM"
         env:
           ELAPSED_COMPOSE: ${{ needs.compose.outputs.elapsed_time }}
-          ELAPSED_HELM: ${{ needs.helm.output.elapsed_time }}
+          ELAPSED_HELM: ${{ needs.helm.outputs.elapsed_time }}
 
  #
  #      - name: Run chart-testing (install)
