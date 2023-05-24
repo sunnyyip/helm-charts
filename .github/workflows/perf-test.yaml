@@ -100,7 +100,7 @@ jobs:
           printf "%-15s%-20s%s\n" "Test" "Deployment Env" "Time"
           printf "%-15s%-20s%s\n" "----" "--------------" "----"
           printf "%-15s%-20s%s seconds\n" "Performance" "Docker Compose" "$ELAPSED_COMPOSE"
-          printf "%-15s%-20s%s seconds\n" "Performance" "Helm" "$elapsed_helm"
+          printf "%-15s%-20s%s seconds\n" "Performance" "Helm" "$ELAPSED_HELM"
         env:
           ELAPSED_COMPOSE: ${{ steps.run_compose.outputs.ELAPSED_COMPOSE }}
           ELAPSED_HELM: ${{ steps.run_helm.outputs.ELAPSED_HELM }}
