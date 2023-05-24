@@ -77,7 +77,6 @@ jobs:
           set -euo pipefail
           make build
           docker build -f dockerfiles/Dockerfile.guac-cont -t local-organic-guac .
-          docker build -f dockerfiles/Dockerfile.healthcheck -t local-healthcheck .
 
       - name: Install Helm
         uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
@@ -100,6 +99,7 @@ jobs:
 
       - name: Deploy Helm Chart
         run: |
+          kind load local-organic-guac:latest ghcr.io/guacsec/guac:v0.1.0
           helm repo add kusaridev https://kusaridev.github.io/helm-charts
           helm repo update
           helm install guac kusaridev/guac --wait
