@@ -34,6 +34,7 @@ jobs:
       - run: docker compose up -d
       - id: run_compose
         run: |
+          sleep 10
           echo "Running performance tests..."
           echo -e "\tDocker Compose"
           start=$(date -u +%s)
