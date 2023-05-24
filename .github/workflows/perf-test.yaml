@@ -97,6 +97,8 @@ jobs:
           helm repo update
           helm install guac kusaridev/guac --wait
           kubectl get pod
+          kubectl port-forward svc/graphql-server 8080:8080 & 
+          kubectl port-forward svc/collectsub 2782:2782 &
  
       - id: run_test
         run: |
