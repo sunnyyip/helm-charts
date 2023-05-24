@@ -28,13 +28,16 @@ jobs:
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
       - run: |
+          #!/usr/bin/env bash
+          set -euo pipefail
           make build
           docker build -f dockerfiles/Dockerfile.guac-cont -t local-organic-guac .
           docker build -f dockerfiles/Dockerfile.healthcheck -t local-healthcheck .
       - run: docker compose up -d
       - id: run_compose
         run: |
-          sleep 10
+          #!/usr/bin/env bash
+          set -euo pipefail
           echo "Running performance tests..."
           echo -e "\tDocker Compose"
           start=$(date -u +%s)
