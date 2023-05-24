@@ -26,6 +26,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v4.0.1
       - run: make build
+      - uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 12
       - run: make container
       - run: docker compose up -d
       - run: time ./bin/guacone collect files ./guac-data/docs
