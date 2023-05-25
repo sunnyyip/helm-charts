@@ -48,8 +48,10 @@ jobs:
         with:
           name: guac-artifacts
           path: ./bin
-      - name: Display structure of downloaded artifact files
-        run: ls -R
+      - name: Fix permissions and display downloaded artifact files
+        run: |
+          chmod +x *
+          ls -la
         working-directory: ./bin
 
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
@@ -104,8 +106,10 @@ jobs:
         with:
           name: guac-artifacts
           path: ./bin
-      - name: Display structure of downloaded artifact files
-        run: ls -R
+      - name: Fix permissions and display downloaded artifact files
+        run: |
+          chmod +x *
+          ls -la
         working-directory: ./bin
 
       # - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
