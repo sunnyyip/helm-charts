@@ -99,6 +99,49 @@ jobs:
            version: 'v1.26.0'
         id: install
 
+      - run: |
+          cat << EOF > helm_values.yaml
+          guac:
+            workingDir: /guac
+            ociCollector:
+              image:
+                command: ['/opt/guac/guaccollect', 'image']
+                repository: local-organic-guac
+                tag: "latest"
+                                
+            depsDevCollector:
+              image:
+                command: ['/opt/guac/guaccollect', 'deps_dev']
+                repository: local-organic-guac
+                tag: "latest"
+      
+            osvCertifier:
+              image:
+                command: ['/opt/guac/guacone', 'certifier', 'osv', '--poll']
+                repository: local-organic-guac
+                tag: "latest"
+      
+            ingestor:
+              image:
+                command: ['/opt/guac/guacingest']
+                repository: local-organic-guac
+                tag: "latest"
+      
+            collectSub:
+              image:
+                command: ['/opt/guac/guaccsub']
+                repository: local-organic-guac
+                tag: "latest"
+      
+            graphqlServer:
+              image:
+                command: ['/opt/guac/guacgql']
+                repository: local-organic-guac
+                tag: "latest"
+          EOF
+          pwd
+          cat helm_values.yaml
+
       - name: Deploy Helm Chart
         run: |
           # docker tag local-organic-guac:latest ghcr.io/guacsec/guac:v0.1.0
@@ -106,7 +149,7 @@ jobs:
           kind load docker-image local-organic-guac:latest
           helm repo add kusaridev https://kusaridev.github.io/helm-charts
           helm repo update
-          helm install guac kusaridev/guac --wait -f .github/workflows/tests/helm_values.yaml
+          helm install guac kusaridev/guac --wait -f helm_values.yaml
           kubectl get pod
           kubectl port-forward svc/graphql-server 8080:8080 & 
           kubectl port-forward svc/collectsub 2782:2782 &
