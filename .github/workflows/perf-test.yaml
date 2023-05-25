@@ -101,10 +101,7 @@ jobs:
 
       - name: Deploy Helm Chart
         run: |
-          kubectl cluster-info --context kind-chart-testing
           docker tag local-organic-guac:latest ghcr.io/guacsec/guac:v0.1.0
-          kind get clusters
-          kind get nodes
           kind load docker-image ghcr.io/guacsec/guac:v0.1.0
           helm repo add kusaridev https://kusaridev.github.io/helm-charts
           helm repo update
