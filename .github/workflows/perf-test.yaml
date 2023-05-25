@@ -18,8 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
         with:
-          repository: 'guacsec/guac'
-          ref: 'main'
+          # repository: 'guacsec/guac'
+          # ref: 'main'
+          repository: 'jeffmendoza/guac'
+          ref: 'ingest-parallel'
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
         with:
           repository: 'guacsec/guac-data'
