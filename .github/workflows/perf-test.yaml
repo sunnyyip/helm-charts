@@ -53,9 +53,9 @@ jobs:
         working-directory: ./bin
 
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
-       with:
-         repository: 'guacsec/guac'
-         ref: 'main'
+        with:
+          repository: 'guacsec/guac'
+          ref: 'main'
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
         with:
           repository: 'guacsec/guac-data'
