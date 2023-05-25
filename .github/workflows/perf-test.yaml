@@ -137,7 +137,7 @@ jobs:
           ELAPSED_COMPOSE: ${{ needs.compose.outputs.elapsed_time }}
           ELAPSED_HELM: ${{ needs.helm.outputs.elapsed_time }}
 
- #
+ 
  #      - name: Run chart-testing (install)
  #        run: ct install --all --helm-extra-args --timeout=600s
  #        # if: steps.list-changed.outputs.changed == 'true'
