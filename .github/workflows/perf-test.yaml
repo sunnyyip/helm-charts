@@ -43,32 +43,42 @@ jobs:
     outputs:
       elapsed_time: ${{ steps.run_test.outputs.elapsed_time }}
     steps:
-      - uses: actions/download-artifact@v3
+      - name: Download artifact files
+        uses: actions/download-artifact@v3
         with:
           name: guac-artifacts
           path: ./bin
-      - run: ls -la ./bin
-      - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
-        with:
-          # repository: 'guacsec/guac'
-          # ref: 'main'
-          repository: 'jeffmendoza/guac'
-          ref: 'ingest-parallel'
+      - name: Display structure of downloaded artifact files
+        run: ls -R
+        working-directory: ./bin
+
+      #- uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+      #  with:
+      #    # repository: 'guacsec/guac'
+      #    # ref: 'main'
+      #    repository: 'jeffmendoza/guac'
+      #    ref: 'ingest-parallel'
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
         with:
           repository: 'guacsec/guac-data'
           ref: 'main'
           path: 'guac-data'
-      - name: Set up Go
-        uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v4.0.1
+      #- name: Set up Go
+      #  uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v4.0.1
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
-      - run: |
+      #- run: |
+      #    #!/usr/bin/env bash
+      #    set -euo pipefail
+      #    make build
+      #    docker build -f dockerfiles/Dockerfile.guac-cont -t local-organic-guac .
+      #    docker build -f dockerfiles/Dockerfile.healthcheck -t local-healthcheck .
+      - name: Load images 
+        run: |
           #!/usr/bin/env bash
           set -euo pipefail
-          make build
-          docker build -f dockerfiles/Dockerfile.guac-cont -t local-organic-guac .
-          docker build -f dockerfiles/Dockerfile.healthcheck -t local-healthcheck .
+          docker load < ./bin/local-organic-guac.tar
+          docker load < ./bin/local-healthcheck.tar
       - run: docker compose up -d
       - id: run_test
         run: |
