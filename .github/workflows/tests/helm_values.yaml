@@ -1,0 +1,37 @@
+guac:
+  workingDir: /guac
+  ociCollector:
+    image:
+      command: ['/opt/guac/guaccollect', 'image']
+      repository: local-organic-guac
+      tag: "latest"
+                      
+  depsDevCollector:
+    image:
+      command: ['/opt/guac/guaccollect', 'deps_dev']
+      repository: local-organic-guac
+      tag: "latest"
+
+  osvCertifier:
+    image:
+      command: ['/opt/guac/guacone', 'certifier', 'osv', '--poll']
+      repository: local-organic-guac
+      tag: "latest"
+
+  ingestor:
+    image:
+      command: ['/opt/guac/guacingest']
+      repository: local-organic-guac
+      tag: "latest"
+
+  collectSub:
+    image:
+      command: ['/opt/guac/guaccsub']
+      repository: local-organic-guac
+      tag: "latest"
+
+  graphqlServer:
+    image:
+      command: ['/opt/guac/guacgql']
+      repository: local-organic-guac
+      tag: "latest"
