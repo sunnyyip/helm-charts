@@ -101,11 +101,12 @@ jobs:
 
       - name: Deploy Helm Chart
         run: |
-          docker tag local-organic-guac:latest ghcr.io/guacsec/guac:v0.1.0
-          kind load docker-image ghcr.io/guacsec/guac:v0.1.0
+          # docker tag local-organic-guac:latest ghcr.io/guacsec/guac:v0.1.0
+          # kind load docker-image ghcr.io/guacsec/guac:v0.1.0
+          kind load docker-image local-organic-guac:latest
           helm repo add kusaridev https://kusaridev.github.io/helm-charts
           helm repo update
-          helm install guac kusaridev/guac --wait
+          helm install guac kusaridev/guac --wait -f .github/workflows/tests/helm_values.yaml
           kubectl get pod
           kubectl port-forward svc/graphql-server 8080:8080 & 
           kubectl port-forward svc/collectsub 2782:2782 &
