@@ -167,6 +167,12 @@ jobs:
 
       - run: |
           cat << EOF > helm_values.yaml
+          nats:
+            nats:
+              jetstream:
+                memStorage:
+                  enabled: true
+                  size: 6Gi
           guac:
             workingDir: /guac
             ociCollector:
