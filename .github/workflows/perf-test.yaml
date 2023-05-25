@@ -11,11 +11,42 @@ permissions:  # added using https://github.com/step-security/secure-repo
   contents: read
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+        with:
+          # repository: 'guacsec/guac'
+          # ref: 'main'
+          repository: 'jeffmendoza/guac'
+          ref: 'ingest-parallel'
+      - name: Set up Go
+        uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v4.0.1
+      - uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 12
+      - run: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+          make build
+          docker build -f dockerfiles/Dockerfile.guac-cont -t local-organic-guac .
+          docker build -f dockerfiles/Dockerfile.healthcheck -t local-healthcheck .
+          docker save -o ./bin/local-organic-guac.tar local-organic-guac
+          docker save -o ./bin/local-healthcheck.tar local-healthcheck
+      - uses: actions/upload-artifact@v3
+        with:
+          name: guac-artifacts
+          path: ./bin
+
   compose:
     runs-on: ubuntu-latest
     outputs:
       elapsed_time: ${{ steps.run_test.outputs.elapsed_time }}
     steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: guac-artifacts
+          path: ./bin
+      - run: ls -la ./bin
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
         with:
           # repository: 'guacsec/guac'
