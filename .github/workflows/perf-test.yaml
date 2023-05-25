@@ -99,30 +99,45 @@ jobs:
     outputs:
       elapsed_time: ${{ steps.run_test.outputs.elapsed_time }}
     steps:
-      - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+      - name: Download artifact files
+        uses: actions/download-artifact@v3
         with:
-          # repository: 'guacsec/guac'
-          # ref: 'main'
-          repository: 'jeffmendoza/guac'
-          ref: 'ingest-parallel'
+          name: guac-artifacts
+          path: ./bin
+      - name: Display structure of downloaded artifact files
+        run: ls -R
+        working-directory: ./bin
+
+      # - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+      #   with:
+      #     # repository: 'guacsec/guac'
+      #     # ref: 'main'
+      #     repository: 'jeffmendoza/guac'
+      #     ref: 'ingest-parallel'
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
         with:
           repository: 'guacsec/guac-data'
           ref: 'main'
           path: 'guac-data'
 
-      - name: Set up Go
-        uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v4.0.1
+      # - name: Set up Go
+      #   uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v4.0.1
 
       - uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
 
-      - run: |
+      # - run: |
+      #     #!/usr/bin/env bash
+      #     set -euo pipefail
+      #     make build
+      #     docker build -f dockerfiles/Dockerfile.guac-cont -t local-organic-guac .
+
+      - name: Load images 
+        run: |
           #!/usr/bin/env bash
           set -euo pipefail
-          make build
-          docker build -f dockerfiles/Dockerfile.guac-cont -t local-organic-guac .
-
+          docker load < ./bin/local-organic-guac.tar
+          docker load < ./bin/local-healthcheck.tar
       - name: Install Helm
         uses: azure/setup-helm@5119fcb9089d432beecbf79bb2c7915207344b78 # v3.5
         with:
@@ -189,8 +204,6 @@ jobs:
 
       - name: Deploy Helm Chart
         run: |
-          # docker tag local-organic-guac:latest ghcr.io/guacsec/guac:v0.1.0
-          # kind load docker-image ghcr.io/guacsec/guac:v0.1.0
           kind load docker-image local-organic-guac:latest
           helm repo add kusaridev https://kusaridev.github.io/helm-charts
           helm repo update
