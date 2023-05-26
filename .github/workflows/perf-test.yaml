@@ -172,6 +172,7 @@ jobs:
           nats:
             nats:
               jetstream:
+                enabled: true
                 memStorage:
                   enabled: true
                   size: 6Gi
