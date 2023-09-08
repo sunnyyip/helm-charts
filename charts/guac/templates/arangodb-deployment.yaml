@@ -1,0 +1,36 @@
+# apiVersion: "database.arangodb.com/v1"
+# kind: "ArangoDeployment"
+# metadata:
+#   name: "{{ .Release.Name }}-simple-single"
+# spec:
+#   mode: Single
+#   image: 'arangodb/arangodb:3.10.8'
+
+apiVersion: "database.arangodb.com/v1"
+kind: "ArangoDeployment"
+metadata:
+  name: {{ .Values.guac.arangoDb.name }}
+spec:
+  mode: Single
+  externalAccess:
+    type: None
+  auth:
+    jwtSecretName: None
+  tls:
+    caSecretName: None
+
+#---
+#kind: Service
+#apiVersion: v1
+#metadata:
+#  name: arangodb-exposed
+#spec:
+#  selector:
+#    app: arangodb
+#    role: single
+#  type: NodePort
+#  ports:
+#    - protocol: TCP
+#      port: 8529
+#      targetPort: 8529
+#      nodePort: 30529
