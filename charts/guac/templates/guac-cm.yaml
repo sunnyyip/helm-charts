@@ -18,13 +18,16 @@ data:
 {{- end }}
 
     # GQL setup
-{{- with (index .Values.guac.graphqlServer.svcPorts 0) }}
     gql-backend: {{ $.Values.guac.graphqlServer.backend }}
-    gql-listen-port: {{ .targetPort }}
     gql-debug: {{ $.Values.guac.graphqlServer.debug }}
     gql-test-data: false
+{{- with (index .Values.guac.graphqlServer.svcPorts 0) }}
     gql-addr: http://{{ $.Values.guac.graphqlServer.name }}.{{ $.Release.Namespace }}.svc.cluster.local:{{ .targetPort }}/query
+    gql-listen-port: {{ .targetPort }}
 {{- end }}
+
+    # ArangoDB setup
+    arango-addr: http://{{ $.Values.guac.arangoDb.name }}.{{ $.Release.Namespace }}.svc.cluster.local:8529
     
     # Collector behavior
     service-poll: true

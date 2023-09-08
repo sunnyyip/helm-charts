@@ -143,6 +143,10 @@ guac:
     backend: inmem
     debug: true
 
+  arangoDb:
+    enabled: false
+    name: arangodb-single-no-auth
+
   visualizer:
     enabled: true
     name: visualizer
