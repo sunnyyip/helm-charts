@@ -1,0 +1,9 @@
+dependencies:
+- name: nats
+  repository: https://nats-io.github.io/k8s/helm/charts/
+  version: 0.19.17
+- name: kube-arangodb
+  repository: ""
+  version: 1.2.32
+digest: sha256:976d46f40d95d18ac6ca9e3901f385425d577871e83bd64075a1fef0dd554f8e
+generated: "2023-09-14T10:09:20.765341-04:00"
