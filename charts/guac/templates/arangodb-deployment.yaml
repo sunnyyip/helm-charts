@@ -6,6 +6,8 @@
 #   mode: Single
 #   image: 'arangodb/arangodb:3.10.8'
 
+{{ if (eq .Values.guac.graphqlServer.backend "arango") -}}
+
 apiVersion: "database.arangodb.com/v1"
 kind: "ArangoDeployment"
 metadata:
@@ -18,6 +20,8 @@ spec:
     jwtSecretName: None
   tls:
     caSecretName: None
+
+{{- end }}
 
 #---
 #kind: Service

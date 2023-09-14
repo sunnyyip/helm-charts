@@ -82,6 +82,8 @@ data:
     SHARED_DATA=/shared-data
     INDICATOR_FILE=${SHARED_DATA}/done_loading_data
     GUAC_DATA_REPO=https://github.com/guacsec/guac-data.git
+    GUAC_BIN_GITHUB_REPO=https://github.com/{{ .Values.guac.sampleData.guacBinSrc.githubRepo }}
+    GUAC_BIN_VERSION={{ .Values.guac.sampleData.guacBinSrc.version }}
 
     case "$1" in
 
@@ -95,7 +97,7 @@ data:
         export GUACSEC_HOME="/guac"
 
         apt-get update && apt-get install -y curl
-        curl -L https://github.com/guacsec/guac/releases/latest/download/guacone-linux-amd64 -o /tmp/guacone
+        curl -vL ${GUAC_BIN_GITHUB_REPO}/releases/download/${GUAC_BIN_VERSION}/guacone-linux-amd64 -o /tmp/guacone
         chmod +x /tmp/guacone
 
         while [ ! -f ${INDICATOR_FILE} ]

@@ -173,6 +173,9 @@ guac:
   sampleData:
     ingest: false
     jobName: ingest-guac-data
+    guacBinSrc:
+      githubRepo: guacsec/guac
+      version: v0.0.0-nightly
 
 
 ## @section nats
@@ -198,6 +201,7 @@ nats:
       app.kubernetes.io/part-of: "guac"
 
   natsbox:
+    enabled: true
     additionalLabels:
       app.kubernetes.io/part-of: "guac"
     podLabels:
@@ -211,3 +215,6 @@ nats:
       namespace: monitoring
       labels:
         release: monitoring
+
+kube-arangodb:
+  scope: namespaced
