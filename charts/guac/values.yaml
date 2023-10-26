@@ -140,12 +140,38 @@ guac:
       - protocol: TCP
         port: 8080
         targetPort: 8080
-    backend: inmem
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    # whether to enable gql playground
     debug: true
+    backend: inmem
 
   arangoDb:
     enabled: false
-    name: arangodb-single-no-auth
+    name: arangodb
+    mode: Single
+    # for all single servers of a Single instance or ActiveFailover pair
+    single: {}
+    # for all Agents of a Cluster or ActiveFailover pair.
+    agents: {}
+    # for all DB-Servers of a Cluster.
+    dbservers: {} 
+    # for all Coordinators of a Cluster.
+    coordinators: {}
+    # for all syncmasters of a Cluster.
+    syncmasters: {}
+    # for all syncworkers of a Cluster.
+    syncworkers: {}
+    image:
+      repository: arangodb/enterprise
+      tag: "3.11.3"
+      # When digest is set to a non-empty value, images will be pulled by digest (regardless of tag value).
+      digest: ""
+      pullPolicy: IfNotPresent
+      ports:
+        - containerPort: 3000 
+    licenseSecret: arango-license-key
 
   visualizer:
     enabled: true
@@ -167,6 +193,41 @@ guac:
         port: 3000
         targetPort: 3000
 
+  ingress:
+    enabled: false
+    ingressClassName: alb
+    annotations: {}
+    extraLabels: {}
+    tls: []
+
+  oauth2Proxy:
+    enabled: false
+    name: oauth2-proxy
+    replica: 1
+    image:
+      repository: mendhak/http-https-echo
+      tag: "30"
+      ports:
+        - containerPort: 8080
+    svcPorts:
+      - protocol: TCP
+        port: 8080
+        targetPort: 8080
+
+  authDebug:
+    enabled: false
+    name: auth-debug
+    replica: 1
+    image:
+      repository: mendhak/http-https-echo
+      tag: "30"
+      ports:
+        - containerPort: 8080
+    svcPorts:
+      - protocol: TCP
+        port: 8080
+        targetPort: 8080
+
   observability:
     deployServiceMonitor: false
 
@@ -175,7 +236,17 @@ guac:
     jobName: ingest-guac-data
     guacBinSrc:
       githubRepo: guacsec/guac
-      version: v0.0.0-nightly
+      version: v0-nightly
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  webtop:
+    enabled: false
+    name: webtop 
+    image:
+      repository: lscr.io/linuxserver/webtop
+      tag: ubuntu-kde
 
 
 ## @section nats
@@ -217,4 +288,9 @@ nats:
         release: monitoring
 
 kube-arangodb:
-  scope: namespaced
+  operator:
+    scope: namespaced
+
+oauth2-proxy:
+  config:
+    existingSecret: oauth2-proxy-secret
