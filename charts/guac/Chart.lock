@@ -5,5 +5,8 @@ dependencies:
 - name: kube-arangodb
   repository: ""
   version: 1.2.32
-digest: sha256:976d46f40d95d18ac6ca9e3901f385425d577871e83bd64075a1fef0dd554f8e
-generated: "2023-09-14T10:09:20.765341-04:00"
+- name: oauth2-proxy
+  repository: https://oauth2-proxy.github.io/manifests
+  version: 6.18.0
+digest: sha256:e47cfd68a2ccf6dd86fff0633edd915a8d569f24b30aa8cd8a711a993d5c9a59
+generated: "2023-10-26T16:38:38.625866-04:00"
