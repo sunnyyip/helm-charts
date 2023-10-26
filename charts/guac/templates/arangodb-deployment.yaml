@@ -1,11 +1,3 @@
-# apiVersion: "database.arangodb.com/v1"
-# kind: "ArangoDeployment"
-# metadata:
-#   name: "{{ .Release.Name }}-simple-single"
-# spec:
-#   mode: Single
-#   image: 'arangodb/arangodb:3.10.8'
-
 {{ if (eq .Values.guac.graphqlServer.backend "arango") -}}
 
 apiVersion: "database.arangodb.com/v1"
@@ -13,28 +5,35 @@ kind: "ArangoDeployment"
 metadata:
   name: {{ .Values.guac.arangoDb.name }}
 spec:
-  mode: Single
   externalAccess:
     type: None
   auth:
     jwtSecretName: None
   tls:
     caSecretName: None
-
+  {{- if .Values.guac.arangoDb.image.digest }}
+  image: "{{ .Values.guac.arangoDb.image.repository }}@{{ .Values.guac.arangoDb.image.digest }}"
+  {{- else }}
+  image: "{{ .Values.guac.arangoDb.image.repository }}:{{ .Values.guac.arangoDb.image.tag | default .Chart.AppVersion}}"
+  {{- end }}
+  license:
+    secretName: {{ .Values.guac.arangoDb.licenseSecret }}
+  mode: {{ .Values.guac.arangoDb.mode }}
+  environment: {{ .Values.guac.arangoDb.environment }}
+  {{- with .Values.guac.arangoDb.single }}
+  single:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.guac.arangoDb.agents }}
+  agents:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.guac.arangoDb.dbservers }}
+  dbservers:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.guac.arangoDb.coordinators }}
+  coordinators:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 {{- end }}
-
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: arangodb-exposed
-#spec:
-#  selector:
-#    app: arangodb
-#    role: single
-#  type: NodePort
-#  ports:
-#    - protocol: TCP
-#      port: 8529
-#      targetPort: 8529
-#      nodePort: 30529

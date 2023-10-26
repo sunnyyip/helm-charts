@@ -55,4 +55,17 @@ spec:
         - name: guac-config
           configMap:
             name: guac-cm
+      {{- with .Values.guac.graphqlServer.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.guac.graphqlServer.affinity }}
+      affinity:
+        {{- toYaml .Values.guac.graphqlServer.affinity | nindent 8 }}
+      {{- end }}
+      {{- with .Values.guac.graphqlServer.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
 {{- end }}

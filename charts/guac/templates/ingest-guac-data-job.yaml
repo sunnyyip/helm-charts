@@ -12,6 +12,7 @@ metadata:
   annotations:
     "helm.sh/hook": post-install, post-upgrade
     "helm.sh/hook-weight": "10"
+    # "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded
 spec:
   backoffLimit: 5
   template:
@@ -60,6 +61,18 @@ spec:
             defaultMode: 0755
         - name: shared-data
           emptyDir: {}
+      {{- with .Values.guac.sampleData.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.guac.sampleData.affinity }}
+      affinity:
+        {{- toYaml .Values.guac.sampleData.affinity | nindent 8 }}
+      {{- end }}
+      {{- with .Values.guac.sampleData.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 
 ---
 apiVersion: v1

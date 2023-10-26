@@ -1,0 +1,106 @@
+{{ if .Values.guac.webtop.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.guac.webtop.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: webtop
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: webtop
+    spec:
+      containers:
+      - image: {{ .Values.guac.webtop.image.repository }}:{{ .Values.guac.webtop.image.tag }}
+        imagePullPolicy: Always
+        name: {{ .Values.guac.webtop.name }}
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        - containerPort: 3001
+          name: https
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /guac
+          name: guac-config
+          readOnly: true
+        - mountPath: /var/tmp/webtop-init
+          name: webtop-init
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: guac-cm
+        name: guac-config
+      - configMap:
+          defaultMode: 0777
+          name: webtop-cm
+        name: webtop-init
+
+      {{- with .Values.guac.webtop.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.guac.webtop.affinity }}
+      affinity:
+        {{- toYaml .Values.guac.webtop.affinity | nindent 8 }}
+      {{- end }}
+      {{- with .Values.guac.webtop.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: webtop
+  name: {{ .Values.guac.webtop.name }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: webtop
+  ports:
+  - name: http
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  - name: https
+    port: 3001
+    protocol: TCP
+    targetPort: 3001
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.guac.webtop.name }}-cm
+data:
+  webtop-init.sh: |
+    #!/usr/bin/env bash
+    set -e
+
+    SHARED_DATA=/shared-data
+    GUAC_DATA_REPO=https://github.com/guacsec/guac-data.git
+    GUAC_BIN_GITHUB_REPO=https://github.com/guacsec/guac
+    GUAC_BIN_VERSION={{ .Values.guac.guacImage.tag }}
+      
+    GUAC_BIN=/opt/guac
+    INDICATOR_FILE=${GUAC_BIN}/.utils_installed
+
+    mkdir -p ${GUAC_BIN}
+    if [[ ! -f "${INDICATOR_FILE}" ]]; then
+
+        apt-get update && apt-get install -y git curl jq make
+        touch ${INDICATOR_FILE}
+        git clone ${GUAC_DATA_REPO} ${SHARED_DATA}/guac-data
+    fi
+
+    curl -L ${GUAC_BIN_GITHUB_REPO}/releases/download/${GUAC_BIN_VERSION}/guacone-linux-amd64 -o ${GUAC_BIN}/guacone
+    chmod +x ${GUAC_BIN}/guacone
+    ln -sf ${GUAC_BIN}/guacone /usr/local/bin/guacone
+
+{{- end }}

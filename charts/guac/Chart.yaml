@@ -24,3 +24,6 @@ dependencies:
   # arango's helm chart is not up to date hence we need to host their chart
   # repository: "https://arangodb.github.io/kube-arangodb"
              
+- name: oauth2-proxy
+  version: "6.18.0"
+  condition: guac.oauth2Proxy.enabled
