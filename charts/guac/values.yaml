@@ -294,3 +294,5 @@ kube-arangodb:
 oauth2-proxy:
   config:
     existingSecret: oauth2-proxy-secret
+  deploymentAnnotations:
+    reloader.stakater.com/auto: "true"
