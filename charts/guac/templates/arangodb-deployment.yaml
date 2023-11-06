@@ -16,8 +16,8 @@ spec:
   {{- else }}
   image: "{{ .Values.guac.arangoDb.image.repository }}:{{ .Values.guac.arangoDb.image.tag | default .Chart.AppVersion}}"
   {{- end }}
-  license:
-    secretName: {{ .Values.guac.arangoDb.licenseSecret }}
+  # license:
+  #   secretName: {{ .Values.guac.arangoDb.licenseSecret }}
   mode: {{ .Values.guac.arangoDb.mode }}
   environment: {{ .Values.guac.arangoDb.environment }}
   {{- with .Values.guac.arangoDb.single }}
