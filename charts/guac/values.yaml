@@ -164,7 +164,7 @@ guac:
     # for all syncworkers of a Cluster.
     syncworkers: {}
     image:
-      repository: arangodb/enterprise
+      # repository: arangodb/enterprise
       tag: "3.11.3"
       # When digest is set to a non-empty value, images will be pulled by digest (regardless of tag value).
       digest: ""
