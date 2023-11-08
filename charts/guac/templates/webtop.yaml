@@ -31,6 +31,10 @@ spec:
           readOnly: true
         - mountPath: /var/tmp/webtop-init
           name: webtop-init
+      {{ if .Values.guac.webtop.usePV }}
+        - mountPath: "/var/www/html"
+          name: webtop-pvc
+      {{- end }}
       volumes:
       - configMap:
           defaultMode: 420
@@ -40,6 +44,11 @@ spec:
           defaultMode: 0777
           name: webtop-cm
         name: webtop-init
+      {{ if .Values.guac.webtop.usePV }}
+      - name: webtop-pvc
+        persistentVolumeClaim:
+          claimName: webtop-pvc
+      {{- end }}
 
       {{- with .Values.guac.webtop.nodeSelector }}
       nodeSelector:
@@ -85,7 +94,7 @@ data:
 
     SHARED_DATA=/shared-data
     GUAC_DATA_REPO=https://github.com/guacsec/guac-data.git
-    GUAC_BIN_GITHUB_REPO=https://github.com/guacsec/guac
+    GUAC_BIN_GITHUB_REPO={{ .Values.guac.webtop.guac_bin_repo }}
     GUAC_BIN_VERSION={{ .Values.guac.guacImage.tag }}
       
     GUAC_BIN=/opt/guac

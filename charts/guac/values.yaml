@@ -165,6 +165,7 @@ guac:
     syncworkers: {}
     image:
       # repository: arangodb/enterprise
+      # tag: "3.11.3"
       repository: arangodb
       tag: "3.11.4"
       # When digest is set to a non-empty value, images will be pulled by digest (regardless of tag value).
@@ -248,6 +249,8 @@ guac:
     image:
       repository: lscr.io/linuxserver/webtop
       tag: ubuntu-kde
+    guacBinRepo: https://github.com/guacsec/guac
+    usePV: false
 
 
 ## @section nats
