@@ -115,10 +115,10 @@ data:
     GUAC_BIN=/shared-data
     INDICATOR_FILE=${GUAC_BIN}/.utils_installed
 
-    mkdir -p ${GUAC_BIN}
-    if [[ ! -f "${INDICATOR_FILE}" ]]; then
+    apt-get update && apt-get install -y git curl jq make
 
-        apt-get update && apt-get install -y git curl jq make
+    if [[ ! -f "${INDICATOR_FILE}" ]]; then
+        mkdir -p ${GUAC_BIN}
         touch ${INDICATOR_FILE}
         git clone ${GUAC_DATA_REPO} ${SHARED_DATA}/guac-data
     fi
