@@ -108,10 +108,11 @@ data:
 
     SHARED_DATA=/shared-data
     GUAC_DATA_REPO=https://github.com/guacsec/guac-data.git
-    GUAC_BIN_GITHUB_REPO={{ .Values.guac.webtop.guac_bin_repo }}
+    GUAC_BIN_GITHUB_REPO={{ .Values.guac.webtop.guacBinRepo }}
     GUAC_BIN_VERSION={{ .Values.guac.guacImage.tag }}
       
-    GUAC_BIN=/opt/guac
+    # GUAC_BIN=/opt/guac
+    GUAC_BIN=/shared-data
     INDICATOR_FILE=${GUAC_BIN}/.utils_installed
 
     mkdir -p ${GUAC_BIN}
