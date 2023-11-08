@@ -32,8 +32,8 @@ spec:
         - mountPath: /var/tmp/webtop-init
           name: webtop-init
       {{ if .Values.guac.webtop.usePV }}
-        - mountPath: "/var/www/html"
-          name: /shared-data
+        - mountPath: "/shared-data"
+          name: webtop-pvc
       {{- end }}
       volumes:
       - configMap:
