@@ -63,6 +63,20 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 ---
+{{ if .Values.guac.webtop.usePV }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: webtop-pvc
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 6Gi
+{{- end }}
+---
 apiVersion: v1
 kind: Service
 metadata:
