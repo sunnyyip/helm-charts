@@ -1,0 +1,63 @@
+{{- if .Values.guac.traefikIngress.enabled -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
+
+  annotations:
+    # traefik.ingress.kubernetes.io/router.middlewares: traefik-global-stripprefix@kubernetescrd, traefik-oathkeeper@kubernetescrd
+{{- if .Values.guac.traefikIngress.annotations }}
+{{ toYaml .Values.guac.traefikIngress.annotations | indent 4 }}
+{{- end }}
+  labels:
+    {{- include "guac.labels" . | nindent 4 }}
+{{- range $key, $value := .Values.guac.traefikIngress.extraLabels }}
+    {{ $key }}: {{ $value }}
+{{- end }}
+spec:
+  {{- if .Values.guac.traefikIngress.ingressClassName }}
+  ingressClassName: {{ .Values.guac.traefikIngress.ingressClassName }}
+  {{- end }}
+  tls:
+  # - hosts:
+  #     - https-example.foo.com
+  - secretName: localhost-cert
+  rules:
+    # - host: {{ .Release.Namespace }}.{{ .Values.environment }}.{{ .Values.domain_name }}
+    # - host: first-guac.dev.kusari-dev.co
+    - http: &http
+        paths:
+          - path: /playground
+            pathType: Prefix
+            backend:
+              service:
+                name: graphql-server
+                port:
+                  number: 8080
+          - path: /query
+            pathType: Prefix
+            backend:
+              service:
+                name: graphql-server
+                port:
+                  number: 8080
+          # - path: /
+          #   # https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types
+          #   # pathType: Exact
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: visualizer
+          #       port:
+          #         number: 3000
+          # - path: /webtop
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: webtop
+          #       port:
+          #         number: 3000
+
+{{- end -}}
