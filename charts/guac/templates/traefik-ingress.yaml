@@ -7,7 +7,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
 
   annotations:
-    # traefik.ingress.kubernetes.io/router.middlewares: traefik-global-stripprefix@kubernetescrd, traefik-oathkeeper@kubernetescrd
+    external-dns.alpha.kubernetes.io/hostname: auth-demo.us.kusari.cloud
+    external-dns.alpha.kubernetes.io/target: gateway.us.kusari.cloud
+    external-dns.alpha.kubernetes.io/ingress-hostname-source: annotation-only
+    # traefik.ingress.kubernetes.io/router.middlewares: traefik-global-stripprefix@kubernetescrd,traefik-oathkeeper@kubernetescrd 
 {{- if .Values.guac.traefikIngress.annotations }}
 {{ toYaml .Values.guac.traefikIngress.annotations | indent 4 }}
 {{- end }}
@@ -20,14 +23,14 @@ spec:
   {{- if .Values.guac.traefikIngress.ingressClassName }}
   ingressClassName: {{ .Values.guac.traefikIngress.ingressClassName }}
   {{- end }}
-  tls:
+  # tls:
   # - hosts:
   #     - https-example.foo.com
-  - secretName: localhost-cert
+  # - secretName: localhost-cert
   rules:
     # - host: {{ .Release.Namespace }}.{{ .Values.environment }}.{{ .Values.domain_name }}
-    # - host: first-guac.dev.kusari-dev.co
-    - http: &http
+    - host: auth-demo.us.kusari.cloud
+      http: &http
         paths:
           - path: /playground
             pathType: Prefix
