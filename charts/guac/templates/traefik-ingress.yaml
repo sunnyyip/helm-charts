@@ -46,15 +46,15 @@ spec:
                 name: graphql-server
                 port:
                   number: 8080
-          # - path: /
-          #   # https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types
-          #   # pathType: Exact
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: visualizer
-          #       port:
-          #         number: 3000
+          - path: /
+            # https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types
+            # pathType: Exact
+            pathType: Prefix
+            backend:
+              service:
+                name: visualizer
+                port:
+                  number: 3000
           # - path: /webtop
           #   pathType: Prefix
           #   backend:
