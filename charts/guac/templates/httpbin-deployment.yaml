@@ -1,48 +1,48 @@
 # Copyright Kusari, Inc. and contributors
 # Licensed under the MIT license. See LICENSE file in the project root for details.
-{{ if .Values.guac.authDebug.enabled }}
+{{ if .Values.guac.httpbin.enabled }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.guac.authDebug.name }}
-{{- if .Values.guac.authDebug.annotations }}
+  name: {{ .Values.guac.httpbin.name }}
+{{- if .Values.guac.httpbin.annotations }}
   annotations:
-{{ toYaml .Values.guac.authDebug.annotations | indent 4 }}
+{{ toYaml .Values.guac.httpbin.annotations | indent 4 }}
 {{- end }}
   labels:
     {{- include "guac.labels" . | nindent 4 }}
-    app.kubernetes.io/name: {{ .Values.guac.authDebug.name }}
-    app.kubernetes.io/component: {{ .Values.guac.authDebug.name }}
+    app.kubernetes.io/name: {{ .Values.guac.httpbin.name }}
+    app.kubernetes.io/component: {{ .Values.guac.httpbin.name }}
 spec:
-  replicas:  {{ .Values.guac.authDebug.replicas }}
+  replicas:  {{ .Values.guac.httpbin.replicas }}
   selector:
     matchLabels:
       {{- include "guac.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/name: {{ .Values.guac.authDebug.name }}
-      app.kubernetes.io/component: {{ .Values.guac.authDebug.name }}
+      app.kubernetes.io/name: {{ .Values.guac.httpbin.name }}
+      app.kubernetes.io/component: {{ .Values.guac.httpbin.name }}
   template:
     metadata:
       labels:
         {{- include "guac.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/name: {{ .Values.guac.authDebug.name }}
-        app.kubernetes.io/component: {{ .Values.guac.authDebug.name }}
+        app.kubernetes.io/name: {{ .Values.guac.httpbin.name }}
+        app.kubernetes.io/component: {{ .Values.guac.httpbin.name }}
     spec:
       containers:
-      - name: {{ .Values.guac.authDebug.name }}
-        {{- if .Values.guac.authDebug.image.digest }}
-        image: "{{ .Values.guac.authDebug.image.repository }}@{{ .Values.guac.authDebug.image.digest }}"
+      - name: {{ .Values.guac.httpbin.name }}
+        {{- if .Values.guac.httpbin.image.digest }}
+        image: "{{ .Values.guac.httpbin.image.repository }}@{{ .Values.guac.httpbin.image.digest }}"
         {{- else }}
-        image: "{{ .Values.guac.authDebug.image.repository }}:{{ .Values.guac.authDebug.image.tag | default .Chart.AppVersion}}"
+        image: "{{ .Values.guac.httpbin.image.repository }}:{{ .Values.guac.httpbin.image.tag | default .Chart.AppVersion}}"
         {{- end }}
-        imagePullPolicy: "{{ .Values.guac.authDebug.image.pullPolicy }}"
-{{- if .Values.guac.authDebug.image.command }}
+        imagePullPolicy: "{{ .Values.guac.httpbin.image.pullPolicy }}"
+{{- if .Values.guac.httpbin.image.command }}
         command:
-{{ toYaml .Values.guac.authDebug.image.command | indent 10 }}
+{{ toYaml .Values.guac.httpbin.image.command | indent 10 }}
 {{- end }}
-{{- if .Values.guac.authDebug.image.ports }}
+{{- if .Values.guac.httpbin.image.ports }}
         ports:
-{{ toYaml .Values.guac.authDebug.image.ports | indent 10 }}
+{{ toYaml .Values.guac.httpbin.image.ports | indent 10 }}
 {{- end }}
         volumeMounts:
           - name: guac-config
