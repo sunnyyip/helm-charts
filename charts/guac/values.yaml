@@ -229,7 +229,7 @@ guac:
     replica: 1
     image:
       repository: kennethreitz/httpbin
-      tag: "30"
+      tag: "latest"
       ports:
         - containerPort: 80
     svcPorts:
