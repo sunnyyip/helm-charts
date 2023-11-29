@@ -1,0 +1,23 @@
+# Copyright Kusari, Inc. and contributors
+# Licensed under the MIT license. See LICENSE file in the project root for details.
+{{ if .Values.guac.httpbin.enabled }}
+{{- if .Values.guac.httpbin.svcPorts }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.guac.httpbin.name }}
+  labels: {{- include "guac.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.guac.httpbin.name }}
+    app.kubernetes.io/component: {{ .Values.guac.httpbin.name }}
+spec:
+  selector:
+    {{- include "guac.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.guac.httpbin.name }}
+    app.kubernetes.io/component: {{ .Values.guac.httpbin.name }}
+  ports:
+  {{- range .Values.guac.httpbin.svcPorts }}
+    - {{ . | toYaml | indent 6 | trim }}
+  {{- end }}
+{{- end }}
+{{- end }}

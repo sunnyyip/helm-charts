@@ -223,7 +223,7 @@ guac:
         port: 8080
         targetPort: 8080
 
-  httpBin:
+  httpbin:
     enabled: false
     name: httpbin 
     replica: 1
