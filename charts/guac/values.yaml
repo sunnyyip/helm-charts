@@ -223,9 +223,9 @@ guac:
         port: 8080
         targetPort: 8080
 
-  authDebug:
+  httpBin:
     enabled: false
-    name: auth-debug
+    name: httpbin 
     replica: 1
     image:
       repository: kennethreitz/httpbin
