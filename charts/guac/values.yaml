@@ -228,14 +228,14 @@ guac:
     name: auth-debug
     replica: 1
     image:
-      repository: mendhak/http-https-echo
+      repository: kennethreitz/httpbin
       tag: "30"
       ports:
-        - containerPort: 8080
+        - containerPort: 80
     svcPorts:
       - protocol: TCP
-        port: 8080
-        targetPort: 8080
+        port: 80
+        targetPort: 80
 
   observability:
     deployServiceMonitor: false
