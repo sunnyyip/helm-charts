@@ -55,12 +55,23 @@ spec:
                 name: visualizer
                 port:
                   number: 3000
-          # - path: /webtop
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: webtop
-          #       port:
-          #         number: 3000
+          {{ if .Values.guac.httpbin.enabled }}
+          - path: /httpbin
+            pathType: Prefix
+            backend:
+              service:
+                name: httpbin
+                port:
+                  number: 80
+          {{ end }}
+          {{ if .Values.guac.webtop.enabled }}
+          - path: /webtop
+            pathType: Prefix
+            backend:
+              service:
+                name: webtop
+                port:
+                  number: 3000
+          {{ end }}
 
 {{- end -}}
