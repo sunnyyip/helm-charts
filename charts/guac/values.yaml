@@ -75,6 +75,11 @@ guac:
     pullPolicy: IfNotPresent
     workingDir: /guac
 
+  # global:
+  #   nodeSelector: {}
+  #   tolerations: []
+  #   affinity: {}
+
   ociCollector:
     enabled: true
     name: oci-collector
@@ -83,6 +88,9 @@ guac:
     replicas: 1
     image:
       command: ['sh', '-c', '/opt/guac/guaccollect image']
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
 
   depsDevCollector:
     enabled: true
@@ -92,6 +100,9 @@ guac:
     replicas: 1
     image:
       command: ['sh', '-c', '/opt/guac/guaccollect deps_dev']
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
 
   osvCertifier:
     enabled: true
@@ -101,6 +112,9 @@ guac:
     replicas: 1
     image:
       command: ['sh', '-c', '/opt/guac/guacone certifier osv --poll']
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
 
   ingestor:
     enabled: true
@@ -110,6 +124,9 @@ guac:
     replicas: 1
     image:
       command: ['sh', '-c', '/opt/guac/guacingest']
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
 
   collectSub:
     enabled: true
@@ -125,6 +142,9 @@ guac:
       - protocol: TCP
         port: 2782
         targetPort: 2782
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
 
   graphqlServer:
     enabled: true
@@ -194,6 +214,9 @@ guac:
       - protocol: TCP
         port: 3000
         targetPort: 3000
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
 
   ingress:
     enabled: false

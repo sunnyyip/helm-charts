@@ -55,4 +55,16 @@ spec:
         - name: guac-config
           configMap:
             name: guac-cm
+      {{- with .Values.guac.depsDevCollector.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.guac.depsDevCollector.affinity }}
+      affinity:
+        {{- toYaml .Values.guac.depsDevCollector.affinity | nindent 8 }}
+      {{- end }}
+      {{- with .Values.guac.depsDevCollector.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{- end }}
