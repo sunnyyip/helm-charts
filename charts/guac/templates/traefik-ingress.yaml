@@ -29,7 +29,7 @@ spec:
   # - secretName: localhost-cert
   rules:
     # - host: {{ .Release.Namespace }}.{{ .Values.environment }}.{{ .Values.domain_name }}
-    - host: auth-demo.us.kusari.cloud
+    - host: {{ .Release.Namespace }}.us.kusari.cloud
       http: &http
         paths:
           - path: /playground
