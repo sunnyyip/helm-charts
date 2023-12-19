@@ -11,6 +11,11 @@ metadata:
     external-dns.alpha.kubernetes.io/target: gateway.us.kusari.cloud
     external-dns.alpha.kubernetes.io/ingress-hostname-source: annotation-only
     # traefik.ingress.kubernetes.io/router.middlewares: traefik-global-stripprefix@kubernetescrd,traefik-oathkeeper@kubernetescrd 
+
+    # uncomment to enable forwardauth for this app at authentik
+    # traefik.ingress.kubernetes.io/router.middlewares: traefik-authentik@kubernetescrd 
+    # traefik.ingress.kubernetes.io/router.middlewares: traefik-oathkeeper@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.priority: "10"
 {{- if .Values.guac.traefikIngress.annotations }}
 {{ toYaml .Values.guac.traefikIngress.annotations | indent 4 }}
 {{- end }}
@@ -72,6 +77,35 @@ spec:
                 name: webtop
                 port:
                   number: 3000
+          {{ end }}
+          {{ if .Values.guac.oauth2Proxy.enabled }}
+          - path: /oauth
+            pathType: Prefix
+            backend:
+              service: {{ .Release.Namespace }}-oauth2-proxy
+                name: 
+                port:
+                  number: 80
+          {{ end }}
+
+    - host: {{ .Release.Namespace }}-api.us.kusari.cloud
+      http:
+        paths:
+          - path: /query
+            pathType: Prefix
+            backend:
+              service:
+                name: graphql-server
+                port:
+                  number: 8080
+          {{ if .Values.guac.httpbin.enabled }}
+          - path: /httpbin
+            pathType: Prefix
+            backend:
+              service:
+                name: httpbin
+                port:
+                  number: 80
           {{ end }}
 
 {{- end -}}
