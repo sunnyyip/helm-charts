@@ -88,7 +88,7 @@ spec:
                   number: 80
           {{ end }}
 
-    - host: {{ .Release.Namespace }}-api.us.kusari.cloud
+    - host: {{ .Release.Namespace }}.api.us.kusari.cloud
       http:
         paths:
           - path: /query
