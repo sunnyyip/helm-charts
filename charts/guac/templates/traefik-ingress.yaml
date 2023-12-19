@@ -88,8 +88,8 @@ spec:
                   number: 80
           {{ end }}
 
-    # - host: {{ .Release.Namespace }}.api.us.kusari.cloud
-    -  http:
+    - host: {{ .Release.Namespace }}.api.us.kusari.cloud
+      http:
         paths:
           - path: /query
             pathType: Prefix
