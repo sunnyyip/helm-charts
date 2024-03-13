@@ -24,7 +24,13 @@
                         "repository": {
                             "type": "string",
                             "description": "Path to the GUAC image",
-                            "default": "ghcr.io/guacsec/guac"
+                            "default": "ghcr.io/kusaridev/guacsec/guac"
+                        },
+                        "tag": {
+                            "type": "string",
+                            "description": "Tag if using an image tag.  Optional",
+                            "default": "issue-1734.sha.0d4652641a3b8a25c987a90519422216e85e3fee",
+                            "nullable": true
                         },
                         "digest": {
                             "type": "string",
@@ -405,6 +411,87 @@
                             "type": "boolean",
                             "description": "Enable debug mode for graphql server; also enable the UI",
                             "default": true
+                        },
+                        "nodeSelector": {
+                            "type": "object",
+                            "description": "- sets the node selector for where to run the deployment",
+                            "default": {}
+                        }
+                    }
+                },
+                "restApi": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "String Whether to deploy the restApi",
+                            "default": true
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "String Name of the restApi component.",
+                            "default": "rest-api"
+                        },
+                        "replicas": {
+                            "type": "number",
+                            "description": "Number of replicas for restApi deployment",
+                            "default": 1
+                        },
+                        "image": {
+                            "type": "object",
+                            "properties": {
+                                "command": {
+                                    "type": "array",
+                                    "description": "Command for the restApi image.  It is not recommended to override this.",
+                                    "default": [
+                                        "sh",
+                                        "-c",
+                                        "/opt/guac/guacrest"
+                                    ],
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "ports": {
+                                    "type": "array",
+                                    "description": "Port the restApi container listens on",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "containerPort": {
+                                                "type": "number",
+                                                "description": "Port the restApi container listens on"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "env": {
+                            "type": "object",
+                            "description": "Environment variables for restApi.",
+                            "default": {}
+                        },
+                        "svcPorts": {
+                            "type": "array",
+                            "description": "Protocol used at the the restApi",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "protocol": {
+                                        "type": "string",
+                                        "description": "Protocol used at the the restApi"
+                                    },
+                                    "port": {
+                                        "type": "number",
+                                        "description": "Port the restApi service listens on"
+                                    },
+                                    "targetPort": {
+                                        "type": "number",
+                                        "description": "Port the restApi container listens on"
+                                    }
+                                }
+                            }
                         },
                         "nodeSelector": {
                             "type": "object",
